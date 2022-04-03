@@ -1,0 +1,1 @@
+web: gunicorn bitsmkt.wsgi --log-file -

@@ -1,5 +1,5 @@
 from itertools import product
-from urllib import request
+from urllib import request, response
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -19,14 +19,13 @@ class AddProduct(APIView):
     def post(request):
         
         data=request.data
-        print(data)
-        user=request.user.username
-        user_obj=User.objects.filter(username=user)[0]
+        user=request.user
         name=data["name"]
         description=data["description"]
         start_price=data["start_price"]
         img=data["img"]
-        item=Product(user=user_obj, name=name, description=description, start_price=start_price, img=img, is_sold=False)
+        prod_type=data["type"]
+        item=Product(user=user, name=name, description=description, start_price=start_price, img=img, product_type=prod_type, is_sold=False)
         item.save()
         return Response("Item Added")
 
@@ -94,22 +93,19 @@ class FinalizeBid(APIView):
             successful_bidder=bid_obj.bidder.email
             return Response(successful_bidder)
         
-        """data=request.data
-        user=request.user
-        product=data["product_id"]
-        prod_obj=Product.objects.filter(id=product)[0]
-        print(product)
-        bid=data["bid_id"]
-        bid_obj=Bid.objects.filter(id=bid)[0]
-        if user != prod_obj.user:
-            print (prod_obj.user)
-            return Response ("Error")
-        elif prod_obj.is_sold==True:
-            return Response("Error! Successful Bid already selected by you!")
-
-        else:
-            prod_obj.update(is_sold=True)
-            success=SuccessfulBid(success_bid=bid_obj)
-            success.save()
-            successful_bidder=bid_obj.bidder.email
-            return Response(successful_bidder)"""
+class ProductSearch(APIView):
+    @staticmethod
+    def get(request):
+        prod_type=request.data["type"]
+        name=request.data["name"]
+        if prod_type==None:
+            by_name=list(Product.objects.filter(name__icontains=name, is_sold=False).values())
+            return Response (by_name)
+        elif name==None:
+            by_type=list(Product.objects.filter(product_type=prod_type, is_sold=False).values())
+            return Response(by_type)
+        by_name=Product.objects.filter(name__icontains=name, is_sold=False)
+        by_type=Product.objects.filter(product_type=prod_type, is_sold=False)
+        print(by_name.union(by_type))
+        search_result=list((by_name.union(by_type)).values())
+        return Response(search_result)

@@ -10,4 +10,5 @@ urlpatterns = [
     path('view_bid/', views.ViewBid().as_view(), name="view_bids"),
     path("bid/", views.PlaceBid().as_view(), name="bid"),
     path("final/", views.FinalizeBid().as_view(), name="final"),
+    path('search/', views.ProductSearch().as_view(), name="search")
 ]

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-vhb*#x!*dr@x10liglqo7b9b5b0*9n!&-6$k6)#+s#ram$n0vm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bitamkt.herokuapp.com','127.0.0.1','*']
+ALLOWED_HOSTS = ['bitsmkt.herokuapp.com','127.0.0.1','*']
 
 
 # Application definition
@@ -78,10 +78,21 @@ WSGI_APPLICATION = 'bitsmkt.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dbaqeu8lmjjikc',
+        'USER': 'rdbsqxujxachnc',
+        'PASSWORD': '215b81e27084d18806cabac14aed53114576da303093fec12ecefb2b3b0ea3ef',
+        'HOST':'ec2-3-230-122-20.compute-1.amazonaws.com',
+        'PORT': '5432',
+
     }
 }
 

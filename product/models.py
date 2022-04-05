@@ -5,9 +5,17 @@ from userProcess.models import UserDetail
 # Create your models here.
 
 class Product(models.Model):
+    PRODUCT_TYPE = (
+        ('acad','Acads'),
+        ('daily', 'Daily Use'),
+        ('bits merch', 'BITS Merch'),
+        ('su', 'SU Items'),
+        ('misc', 'Miscellaneous')
+    )
     user=models.ForeignKey(User, on_delete=CASCADE)
     img=models.ImageField(upload_to="product", blank=False)
     name=models.CharField(max_length=20)
+    product_type=models.CharField(max_length=20, choices=PRODUCT_TYPE)
     description=models.TextField()
     start_price=models.FloatField()
     is_sold=models.BooleanField()
